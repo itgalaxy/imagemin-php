@@ -1,40 +1,58 @@
 language: php
 
+os:
+    - linux
+    - osx
+
+osx_image: xcode8.2
+
 sudo: false
 
 cache:
-  directories:
-    - $HOME/.composer/cache
+    directories:
+        - $HOME/.composer/cache
 
 addons:
-  apt:
-    packages:
-      - libpng-dev
-      - zlib1g-dev
+    apt:
+        packages:
+            - libpng-dev
+            - zlib1g-dev
+            - nasm
 
 matrix:
-  fast_finish: true
-  include:
-    - php: 5.6
-    - php: 7.0
-    - php: 7.1
-      env: WITH_COVERAGE=true
-    - php: hhvm
-    - php: nightly
-  allow_failures:
-    - php: nightly
+    fast_finish: true
+    include:
+        - php: 5.6
+          env: DEPENDENCIES=lowest
+        - php: 5.6
+          env: DEPENDENCIES=highest
+        - php: 7.0
+          env: DEPENDENCIES=lowest
+        - php: 7.0
+          env: DEPENDENCIES=highest
+        - php: 7.1
+          env: DEPENDENCIES=lowest
+        - php: 7.1
+          env: DEPENDENCIES=highest WITH_COVERAGE=true
+        - php: hhvm
+        - php: nightly
+    allow_failures:
+        - php: nightly
 
 before_install:
-  - echo $TRAVIS_PHP_VERSION
-  - if [[ "$WITH_COVERAGE" != "true" && "$TRAVIS_PHP_VERSION" != "hhvm" && "$TRAVIS_PHP_VERSION" != "nightly" ]]; then phpenv config-rm xdebug.ini; fi
-  - composer selfupdate
-  - composer validate
+    - if [[ $TRAVIS_OS_NAME == osx ]]; then brew update && brew install nasm; fi;
+    - if [[ "$WITH_COVERAGE" != "true" && "$TRAVIS_PHP_VERSION" != "hhvm" && "$TRAVIS_PHP_VERSION" != "nightly" ]]; then phpenv config-rm xdebug.ini; fi
+    - travis_retry composer selfupdate
+    - composer validate
 
 install:
-  - composer install --no-progress --profile --prefer-dist --no-interaction
+    - if [[ "$DEPENDENCIES" == "lowest" ]]; then travis_retry composer update --prefer-lowest --no-progress --no-interaction; fi
+    - if [[ "$DEPENDENCIES" == "current" ]]; then travis_retry composer install --no-progress --no-interaction; fi
+    - if [[ "$DEPENDENCIES" == "highest" ]]; then travis_retry composer update --no-progress --no-interaction; fi
+    - composer show
 
 script:
-  - if [[ "$WITH_COVERAGE" == "true" ]]; then composer test; else composer test -- --no-coverage; fi
+    - if [[ "$WITH_COVERAGE" == "true" ]]; then composer test; else composer test -- --no-coverage; fi
 
 after_success:
-  - if [[ "$WITH_COVERAGE" == "true" ]]; then travis_retry php vendor/bin/coveralls -v; fi
+    - if [[ "$WITH_COVERAGE" == "true" ]]; then travis_retry php vendor/bin/coveralls -v; fi

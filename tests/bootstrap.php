@@ -46,8 +46,8 @@ $jpegoptimBin->install();
 $jpegtranBin = new JpegtranBin();
 $jpegtranBin->install();
 
-$mozjpegBin = new MozjpegBin();
-$mozjpegBin->install();
+// $mozjpegBin = new MozjpegBin();
+// $mozjpegBin->install();
 
 $optipngBin = new OptipngBin();
 $optipngBin->install();
