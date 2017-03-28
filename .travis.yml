@@ -1,0 +1,40 @@
+language: php
+
+sudo: false
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+addons:
+  apt:
+    packages:
+      - libpng-dev
+      - zlib1g-dev
+
+matrix:
+  fast_finish: true
+  include:
+    - php: 5.6
+    - php: 7.0
+    - php: 7.1
+      env: WITH_COVERAGE=true
+    - php: hhvm
+    - php: nightly
+  allow_failures:
+    - php: nightly
+
+before_install:
+  - echo $TRAVIS_PHP_VERSION
+  - if [[ "$WITH_COVERAGE" != "true" && "$TRAVIS_PHP_VERSION" != "hhvm" && "$TRAVIS_PHP_VERSION" != "nightly" ]]; then phpenv config-rm xdebug.ini; fi
+  - composer selfupdate
+  - composer validate
+
+install:
+  - composer install --no-progress --profile --prefer-dist --no-interaction
+
+script:
+  - if [[ "$WITH_COVERAGE" == "true" ]]; then composer test; else composer test -- --no-coverage; fi
+
+after_success:
+  - if [[ "$WITH_COVERAGE" == "true" ]]; then travis_retry php vendor/bin/coveralls -v; fi
