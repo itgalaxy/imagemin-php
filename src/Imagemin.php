@@ -27,7 +27,9 @@ class Imagemin
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefault('plugins', new NullOptimizer());
+        $resolver->setDefaults([
+            'plugins' => new NullOptimizer()
+        ]);
         $resolver->setAllowedTypes('plugins', OptimizerInterface::class);
     }
 
