@@ -1,5 +1,8 @@
 # imagemin-php
 
+[![Latest Stable Version](https://poser.pugx.org/itgalaxy/imagemin-php/v/stable)](https://packagist.org/packages/itgalaxy/imagemin-php)
+[![Travis Build Status](https://img.shields.io/travis/itgalaxy/imagemin-php/master.svg?label=build)](https://travis-ci.org/itgalaxy/imagemin-php)
+
 A PHP port of Imagemin.
 
 ## Install
