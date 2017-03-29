@@ -56,11 +56,6 @@ matrix:
           language: generic
           env: _OSX=10.12 _PHP=php71 DEPENDENCIES=highest
 
-        - os: osx
-          osx_image: xcode8.3
-          language: generic
-          php: hhvm
-          env: DEPENDENCIES=highest
     allow_failures:
         - php: nightly
 

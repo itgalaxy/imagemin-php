@@ -14,7 +14,7 @@ class SvgoBin extends AbstractBin
 
         return $binWrapper
             ->src($url . 'bin')
-            ->dest($this->binDir . '/' . $this->name)
+            ->dest($this->binDir . '/' . $this->name . '/bin')
             ->using('svgo');
     }
 

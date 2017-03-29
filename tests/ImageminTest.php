@@ -9,7 +9,7 @@ class ImageminTest extends TestCase
 {
     public function testOptimizeAFile()
     {
-        $file = __DIR__ . '/fixtures/fixture.jpg';
+        $file = __DIR__ . '/fixtures/test.jpg';
         $imagemin = new Imagemin([
             'plugins' => new JpegtranOptimizer()
         ]);

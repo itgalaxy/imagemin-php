@@ -1,4 +1,5 @@
 <?php
+define('FIXTURES_DIR', __DIR__ . '/fixtures');
 
 /*
  * Require Composer autoloader if installed on it's own.
@@ -46,8 +47,8 @@ $jpegoptimBin->install();
 $jpegtranBin = new JpegtranBin();
 $jpegtranBin->install();
 
-// $mozjpegBin = new MozjpegBin();
-// $mozjpegBin->install();
+$mozjpegBin = new MozjpegBin();
+$mozjpegBin->install();
 
 $optipngBin = new OptipngBin();
 $optipngBin->install();
@@ -58,8 +59,10 @@ $pngcrushBin->install();
 $pngoutBin = new PngoutBin();
 $pngoutBin->install();
 
-// $pngquantBin = new PngquantBin();
-// $pngquantBin->install();
+$pngquantBin = new PngquantBin();
+$pngquantBin->install();
 
 $zopflipngBin = new ZopflipngBin();
 $zopflipngBin->install();
+
+// Todo remove all binaries after test

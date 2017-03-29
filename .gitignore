@@ -88,7 +88,7 @@ bower_components
 .bower-cache
 .bower-registry
 .bower-tmp
-node_modules
+/node_modules
 jspm_packages
 
 # Optional npm cache directory
