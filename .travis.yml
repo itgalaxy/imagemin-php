@@ -1,60 +1,87 @@
 language: php
 
-os:
-    - linux
-    - osx
-
-osx_image: xcode8.2
-
 sudo: false
 
 cache:
     directories:
         - $HOME/.composer/cache
 
-addons:
-    apt:
-        packages:
-            - libpng-dev
-            - zlib1g-dev
-            - nasm
-
 matrix:
     fast_finish: true
     include:
-        - php: 5.6
+        - os: linux
+          php: 5.6
           env: DEPENDENCIES=lowest
-        - php: 5.6
+
+        - os: linux
+          php: 5.6
           env: DEPENDENCIES=highest
-        - php: 7.0
+
+        - os: linux
+          php: 7.0
           env: DEPENDENCIES=lowest
-        - php: 7.0
+
+        - os: linux
+          php: 7.0
           env: DEPENDENCIES=highest
-        - php: 7.1
+
+        - os: linux
+          php: 7.1
           env: DEPENDENCIES=lowest
-        - php: 7.1
+
+        - os: linux
+          php: 7.1
           env: DEPENDENCIES=highest WITH_COVERAGE=true
-        - php: hhvm
+
+        - os: linux
+          php: hhvm
           env: DEPENDENCIES=highest
-        - php: nightly
+
+        - os: linux
+          php: nightly
+          env: DEPENDENCIES=highest
+
+        - os: osx
+          osx_image: xcode8.3
+          language: generic
+          env: _OSX=10.12 _PHP=php56 DEPENDENCIES=highest
+
+        - os: osx
+          osx_image: xcode8.3
+          language: generic
+          env: _OSX=10.12 _PHP=php70 DEPENDENCIES=highest
+
+        - os: osx
+          osx_image: xcode8.3
+          language: generic
+          env: _OSX=10.12 _PHP=php71 DEPENDENCIES=highest
+
+        - os: osx
+          osx_image: xcode8.3
+          language: generic
+          php: hhvm
           env: DEPENDENCIES=highest
     allow_failures:
         - php: nightly
 
 before_install:
-    - if [[ $TRAVIS_OS_NAME == osx ]]; then brew update && brew install nasm; fi;
-    - if [[ "$WITH_COVERAGE" != "true" && "$TRAVIS_PHP_VERSION" != "hhvm" && "$TRAVIS_PHP_VERSION" != "nightly" ]]; then phpenv config-rm xdebug.ini; fi
-    - travis_retry composer selfupdate
-    - composer validate
+    - if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then /usr/bin/env bash bin/prepare_osx_env.sh ; fi
+    - if [[ "${TRAVIS_OS_NAME}" == "linux" && "${WITH_COVERAGE}" != "true" && "$TRAVIS_PHP_VERSION" != "hhvm" && "$TRAVIS_PHP_VERSION" != "nightly" ]]; then phpenv config-rm xdebug.ini; fi
 
 install:
-    - if [[ "$DEPENDENCIES" == "lowest" ]]; then travis_retry composer update --prefer-lowest --no-progress --no-interaction; fi
-    - if [[ "$DEPENDENCIES" == "current" ]]; then travis_retry composer install --no-progress --no-interaction; fi
-    - if [[ "$DEPENDENCIES" == "highest" ]]; then travis_retry composer update --no-progress --no-interaction; fi
-    - composer show
+    - curl -s http://getcomposer.org/installer | php
+    - if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then /usr/bin/env bash bin/handle_brew_pkg.sh "${_PHP}" ; fi
+    - if [[ "${DEPENDENCIES}" == "lowest" ]]; then travis_retry php composer.phar update --prefer-lowest --no-progress --no-interaction; fi
+    - if [[ "${DEPENDENCIES}" == "current" ]]; then travis_retry php composer.phar install --no-progress --no-interaction; fi
+    - if [[ "${DEPENDENCIES}" == "highest" ]]; then travis_retry php composer.phar update --no-progress --no-interaction; fi
+    - php composer.phar show
+
+# before_script:
+#    - /usr/bin/env bash bin/custom_php_ini.sh # set ADDITIONAL_PHP_INI env pointing to correct file (e.g. build/.travis.php.ini)
 
 script:
-    - if [[ "$WITH_COVERAGE" == "true" ]]; then composer test; else composer test -- --no-coverage; fi
+    - php composer.phar validate
+    - if [[ "${WITH_COVERAGE}" == "true" ]]; then php composer.phar test; else php composer.phar test -- --no-coverage; fi
 
 after_success:
-    - if [[ "$WITH_COVERAGE" == "true" ]]; then travis_retry php vendor/bin/coveralls -v; fi
+    - if [[ "${WITH_COVERAGE}" == "true" && -f "vendor/bin/coveralls" ]]; then travis_retry php vendor/bin/coveralls -v; fi
