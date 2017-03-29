@@ -44,10 +44,6 @@ class CwebBinTest extends TestCase
         $sourceFileSize = filesize($src);
         $destFileSize = filesize($dest);
 
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $mimeType = finfo_file($finfo, $dest);
-
-        $this->assertEquals('image/webp', $mimeType);
         $this->assertTrue($sourceFileSize > $destFileSize);
     }
 
@@ -81,10 +77,7 @@ class CwebBinTest extends TestCase
 
         $sourceFileSize = filesize($src);
         $destFileSize = filesize($dest);
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $mimeType = finfo_file($finfo, $dest);
 
-        $this->assertEquals('image/webp', $mimeType);
         $this->assertTrue($sourceFileSize > $destFileSize);
 
         $fs->remove($dest);

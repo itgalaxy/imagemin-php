@@ -13,6 +13,7 @@ class SvgoBinTest extends TestCase
 
     // Todo https://github.com/imagemin/pngquant-bin/blob/master/test/test.js#L27
 
+    // Maybe Todo node_modules in root and only link on bin
     public function testMinifyASVG()
     {
         $src = FIXTURES_DIR . '/test.svg';
