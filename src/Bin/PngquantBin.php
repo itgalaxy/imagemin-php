@@ -18,7 +18,7 @@ class PngquantBin extends AbstractBin
             ->src($url . 'linux/x86/pngquant', 'linux', 'x86')
             ->src($url . 'linux/x64/pngquant', 'linux', 'x64')
             ->src($url . 'freebsd/x64/pngquant', 'freebsd', 'x64')
-            ->src($url . 'win/pngquant.exe', 'win32')
+            ->src($url . 'win/pngquant.exe', 'windows')
             ->dest($this->binDir . '/' . $this->name)
             ->using(substr($platform, 0, 3) === 'win' ? 'pngquant.exe' : 'pngquant');
     }

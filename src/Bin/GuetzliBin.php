@@ -16,7 +16,7 @@ class GuetzliBin extends AbstractBin
         return $binWrapper
             ->src($url . 'macos/guetzli', 'darwin')
             ->src($url . 'linux/guetzli', 'linux')
-            ->src($url . 'win/guetzli.exe', 'win32')
+            ->src($url . 'win/guetzli.exe', 'windows')
             ->dest($this->binDir . '/' . $this->name)
             ->using(substr($platform, 0, 3) === 'win' ? 'guetzli.exe' : 'guetzli');
     }

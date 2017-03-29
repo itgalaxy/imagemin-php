@@ -21,10 +21,10 @@ class JpegtranBin extends AbstractBin
             ->src($url . 'freebsd/x64/jpegtran', 'freebsd', 'x64')
             ->src($url . 'sunos/x86/jpegtran', 'sunos', 'x86')
             ->src($url . 'sunos/x64/jpegtran', 'sunos', 'x64')
-            ->src($url . 'win/x86/jpegtran.exe', 'win32', 'x86')
-            ->src($url . 'win/x64/jpegtran.exe', 'win32', 'x64')
-            ->src($url . 'win/x86/libjpeg-62.dll', 'win32', 'x86')
-            ->src($url . 'win/x64/libjpeg-62.dll', 'win32', 'x64')
+            ->src($url . 'win/x86/jpegtran.exe', 'windows', 'x86')
+            ->src($url . 'win/x64/jpegtran.exe', 'windows', 'x64')
+            ->src($url . 'win/x86/libjpeg-62.dll', 'windows', 'x86')
+            ->src($url . 'win/x64/libjpeg-62.dll', 'windows', 'x64')
             ->dest($this->binDir . '/' . $this->name)
             ->using(substr($platform, 0, 3) === 'win' ? 'jpegtran.exe' : 'jpegtran');
     }

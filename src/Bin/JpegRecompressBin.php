@@ -16,7 +16,7 @@ class JpegRecompressBin extends AbstractBin
         return $binWrapper
             ->src($url . 'osx/jpeg-recompress', 'darwin')
             ->src($url . 'linux/jpeg-recompress', 'linux')
-            ->src($url . 'win/jpeg-recompress.exe', 'win32')
+            ->src($url . 'win/jpeg-recompress.exe', 'windows')
             ->dest($this->binDir . '/' . $this->name)
             ->using(substr($platform, 0, 3) === 'win' ? 'jpeg-recompress.exe' : 'jpeg-recompress');
     }

@@ -19,8 +19,8 @@ class GifsicleBin extends AbstractBin
             ->src($url . 'linux/x64/gifsicle', 'linux', 'x64')
             ->src($url . 'freebsd/x86/gifsicle', 'freebsd', 'x86')
             ->src($url . 'freebsd/x64/gifsicle', 'freebsd', 'x64')
-            ->src($url . 'win/x86/gifsicle.exe', 'win32', 'x86')
-            ->src($url . 'win/x64/gifsicle.exe', 'win32', 'x64')
+            ->src($url . 'win/x86/gifsicle.exe', 'windows', 'x86')
+            ->src($url . 'win/x64/gifsicle.exe', 'windows', 'x64')
             ->dest($this->binDir . '/' . $this->name)
             ->using(substr($platform, 0, 3) === 'win' ? 'gifsicle.exe' : 'gifsicle');
     }

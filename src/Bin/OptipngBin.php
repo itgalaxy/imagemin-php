@@ -21,7 +21,7 @@ class OptipngBin extends AbstractBin
             ->src($url . 'freebsd/x64/optipng', 'freebsd', 'x64')
             ->src($url . 'sunos/x86/optipng', 'sunos', 'x86')
             ->src($url . 'sunos/x64/optipng', 'sunos', 'x64')
-            ->src($url . 'win/optipng.exe', 'win32')
+            ->src($url . 'win/optipng.exe', 'windows')
             ->dest($this->binDir . '/' . $this->name)
             ->using(substr($platform, 0, 3) === 'win' ? 'optipng.exe' : 'optipng');
     }

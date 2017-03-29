@@ -17,8 +17,8 @@ class PngcrushBin extends AbstractBin
         return $binWrapper
             ->src($url . 'osx/pngcrush', 'darwin')
             ->src($url . 'linux/pngcrush', 'linux')
-            ->src($url . 'win/x64/pngcrush.exe', 'win32', 'x64')
-            ->src($url . 'win/x86/pngcrush.exe', 'win32', 'x86')
+            ->src($url . 'win/x64/pngcrush.exe', 'windows', 'x64')
+            ->src($url . 'win/x86/pngcrush.exe', 'windows', 'x86')
             ->dest($this->binDir . '/' . $this->name)
             ->using(substr($platform, 0, 3) === 'win' ? 'pngcrush.exe' : 'pngcrush');
     }

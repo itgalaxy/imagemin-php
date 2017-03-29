@@ -19,7 +19,7 @@ class PngoutBin extends AbstractBin
             ->src($url . 'linux/x64/pngout', 'linux', 'x64')
             ->src($url . 'freebsd/x86/pngout', 'freebsd', 'x86')
             ->src($url . 'freebsd/x64/pngout', 'freebsd', 'x64')
-            ->src($url . 'win32/pngout.exe', 'win32')
+            ->src($url . 'win32/pngout.exe', 'windows')
             ->dest($this->binDir . '/' . $this->name)
             ->using(substr($platform, 0, 3) === 'win' ? 'pngout.exe' : 'pngout');
     }

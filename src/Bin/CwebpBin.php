@@ -17,8 +17,8 @@ class CwebpBin extends AbstractBin
             ->src($url . 'osx/cwebp', 'darwin')
             ->src($url . 'linux/x86/cwebp', 'linux', 'x86')
             ->src($url . 'linux/x64/cwebp', 'linux', 'x64')
-            ->src($url . 'win/x86/cwebp.exe', 'win32', 'x86')
-            ->src($url . 'win/x64/cwebp.exe', 'win32', 'x64')
+            ->src($url . 'win/x86/cwebp.exe', 'windows', 'x86')
+            ->src($url . 'win/x64/cwebp.exe', 'windows', 'x64')
             ->dest($this->binDir . '/' . $this->name)
             ->using(substr($platform, 0, 3) === 'win' ? 'cwebp.exe' : 'cwebp');
     }
