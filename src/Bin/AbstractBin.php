@@ -21,12 +21,12 @@ abstract class AbstractBin
 
     public function install($args = [])
     {
-        // try {
         $this->getBinWrapper()->run($args);
-        // } catch (\Exception $error) {
-        // Todo log error
-        // Todo try recompile from source
-        // }
+    }
+
+    public function recompile($args = [])
+    {
+        // Todo need implement
     }
 
     public function getBinPath()
