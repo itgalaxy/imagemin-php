@@ -21,6 +21,11 @@ Coming soon...
 
 Coming soon...
 
+## Roadmap
+
+-   Support logger.
+-   Support input as array of glob strings.
+
 ## Related
 
 -   [imagemin](https://github.com/imagemin/imagemin) - thanks for inspiration.

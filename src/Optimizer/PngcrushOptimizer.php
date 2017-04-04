@@ -1,10 +1,10 @@
 <?php
 namespace Itgalaxy\Imagemin\Optimizer;
 
-use Itgalaxy\Imagemin\Bin\JpegtranBin;
+use Itgalaxy\Imagemin\Bin\PngcrushBin;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class JpegtranOptimizer extends OptimizerAbstract implements OptimizerInterface
+class PngcrushOptimizer extends OptimizerAbstract implements OptimizerInterface
 {
     protected $binPath = null;
 
@@ -12,7 +12,7 @@ class JpegtranOptimizer extends OptimizerAbstract implements OptimizerInterface
     {
         parent::__construct($options);
 
-        $binWrapper = new JpegtranBin();
+        $binWrapper = new PngcrushBin();
         $this->binPath = $binWrapper->getBinPath();
     }
 
@@ -21,11 +21,10 @@ class JpegtranOptimizer extends OptimizerAbstract implements OptimizerInterface
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'progressive' => null,
-            'arithmetic' => null
+            'reduce' => null
         ]);
-        $resolver->setAllowedTypes('progressive', ['null', 'bool']);
-        $resolver->setAllowedTypes('arithmetic', ['null', 'bool']);
+
+        $resolver->setAllowedTypes('reduce', ['null', 'bool']);
     }
 
     public function optimize($input)
@@ -34,27 +33,26 @@ class JpegtranOptimizer extends OptimizerAbstract implements OptimizerInterface
             throw new \Exception('Expected a resource type');
         }
 
-        if (!$this->fs->isJpg($input)) {
+        if (!$this->fs->isPng($input)) {
             return $input;
         }
 
+        $args = [
+            '-brute',
+            '-force',
+            '-q'
+        ];
+
         $options = $this->options;
 
-        $args = ['-copy', 'none'];
-
-        if ($options['progressive']) {
-            array_push($args, '-progressive');
-        }
-
-        if ($options['arithmetic']) {
-            array_push($args, '-arithmetic');
+        if ($options['reduce']) {
+            array_push($args, '-reduce');
         } else {
-            array_push($args, '-optimize');
+            array_push($args, '-noreduce');
         }
 
-        array_push($args, '-outfile');
-        array_push($args, '${output}');
         array_push($args, '${input}');
+        array_push($args, '${output}');
 
         return $this->execute($input, $this->binPath, $args);
     }

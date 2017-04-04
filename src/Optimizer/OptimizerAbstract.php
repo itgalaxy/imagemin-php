@@ -3,34 +3,48 @@ namespace Itgalaxy\Imagemin\Optimizer;
 
 use Itgalaxy\OsFilter\OsFilter;
 use Itgalaxy\Imagemin\Filesystem\Filesystem;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\ProcessBuilder;
 use Symfony\Component\Process\ExecutableFinder;
 
 abstract class OptimizerAbstract implements OptimizerInterface
 {
+    protected $binPath = null;
+
     protected $options = [];
 
     protected $fs = null;
 
     public function __construct(array $options = [])
     {
-        // Todo merge options
-
         $this->fs = new Filesystem();
+
+        $optionsResolver = new OptionsResolver();
+        $this->configureOptions($optionsResolver);
+        $this->options = $optionsResolver->resolve($options);
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        // Nothing
     }
 
     abstract public function optimize($input);
 
-    protected function execute($input, $bin, array $args = [])
+    protected function execute($input, $bin, array $args = [], $onlyInput = false)
     {
         $tempDir = $this->fs->getTempDir();
 
         // tempnam doesn't not work correctly with temp directories
         $inputPath = $this->fs->tempnam($tempDir, 'imagemin-');
-        $outputPath = $this->fs->tempnam($tempDir, 'imagemin-');
+        $writeResult = @fwrite($input, $inputPath);
 
-        fwrite($input, $inputPath);
+        if ($writeResult === false) {
+            throw new \Exception('Can\'t write stream by ' . $inputPath);
+        }
+
+        $outputPath = !$onlyInput ? $this->fs->tempnam($tempDir, 'imagemin-') : null;
 
         $originalInputUri = stream_get_meta_data($input)['uri'];
 
@@ -39,7 +53,7 @@ abstract class OptimizerAbstract implements OptimizerInterface
         foreach ($args as &$arg) {
             if (strpos($arg, '${input}') !== false) {
                 $arg = str_replace('${input}', $inputPath, $arg);
-            } else if (strpos($arg, '${output}') !== false) {
+            } else if (!$onlyInput && strpos($arg, '${output}') !== false) {
                 $arg = str_replace('${output}', $outputPath, $arg);
             }
         }
@@ -50,6 +64,8 @@ abstract class OptimizerAbstract implements OptimizerInterface
             ->setArguments($args)
             ->getProcess();
 
+        // Disable output to save memory
+        $process->disableOutput();
         $process->run();
 
         if (!$process->isSuccessful()) {
@@ -57,42 +73,10 @@ abstract class OptimizerAbstract implements OptimizerInterface
         }
 
         // Remove temporary input path
-        $this->fs->remove($inputPath);
+        if (!$onlyInput) {
+            $this->fs->remove($inputPath);
+        }
 
-        return fopen($outputPath, 'r');
-    }
-
-    private function resolveDefault($default)
-    {
-        return is_callable($default) ? call_user_func($default) : $default;
-    }
-
-    private function option($name, $default = null)
-    {
-        return isset($this->options[$name]) ? $this->options[$name] : $this->resolveDefault($default);
-    }
-
-    // Todo add pre testing
-    // Todo merge with *Bin classes
-    private function findExecutable($name)
-    {
-        $executableFinder = new ExecutableFinder();
-
-        return $this->option($name . '_bin', function () use ($name, $executableFinder) {
-            if (isset($this->options['buildInBin'])) {
-                $osFilter = new OsFilter();
-                $foundBins = $osFilter->find($this->options['buildInBin']);
-
-                // why is_array
-                if (is_array($foundBins) && count($foundBins) > 0) {
-                    $foundBin = current($foundBins);
-                    $binPath = BIN_DIR . '/' . $name . '/' . $foundBin['path'];
-
-                    return $binPath;
-                }
-            }
-
-            return $executableFinder->find($name, $name);
-        });
+        return fopen($onlyInput ? $inputPath : $outputPath, 'r');
     }
 }

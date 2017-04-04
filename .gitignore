@@ -88,7 +88,7 @@ bower_components
 .bower-cache
 .bower-registry
 .bower-tmp
-/node_modules
+node_modules
 jspm_packages
 
 # Optional npm cache directory
@@ -109,8 +109,6 @@ jspm_packages
 
 # Applcation
 build
-src/shared/fonts/icon-font.*
-src/shared/styles/fonts/_icon-font.scss
 
 # Composer
 composer.phar

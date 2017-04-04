@@ -11,8 +11,6 @@ class Filesystem extends \Symfony\Component\Filesystem\Filesystem
     }
 
     public function getTempDir() {
-        $temp = '';
-
         if (function_exists('sys_get_temp_dir')) {
             $temp = sys_get_temp_dir();
 
@@ -82,7 +80,104 @@ class Filesystem extends \Symfony\Component\Filesystem\Filesystem
 
     public function isJpg($input)
     {
-        return true;// $this->getMimeType($input) === 'image/jpeg';
+        if (!is_resource($input)) {
+            $input = stream_get_meta_data($input)['uri'];
+        }
+
+        $mimeType = $this->getMimeType($input);
+
+        return $mimeType == 'image/jpeg';
+    }
+
+    public function isJpgProgressive($input)
+    {
+        if (!$this->isJpg($input)) {
+            return false;
+        }
+
+        if (!is_resource($input)) {
+            $input = stream_get_meta_data($input)['uri'];
+        }
+
+        $contents = stream_get_contents($input, 65535);
+        $bytes = unpack("C*", $contents);
+
+        $prevByte = null;
+
+        foreach ($bytes as $byte) {
+            $byte = dechex($byte);
+
+            if ($prevByte !== 'ff') {
+                $prevByte = $byte;
+
+                continue;
+            }
+
+            if ($byte === 'c2') {
+                return true;
+            }
+
+            $prevByte = $byte;
+        }
+
+        return false;
+    }
+
+    public function isPng($input)
+    {
+        if (!is_resource($input)) {
+            $input = stream_get_meta_data($input)['uri'];
+        }
+
+        $mimeType = $this->getMimeType($input);
+
+        return $mimeType == 'image/png';
+    }
+
+    public function isGif($input)
+    {
+        if (!is_resource($input)) {
+            $input = stream_get_meta_data($input)['uri'];
+        }
+
+        $mimeType = $this->getMimeType($input);
+
+        return $mimeType == 'image/gif';
+    }
+
+    public function isTif($input)
+    {
+        if (!is_resource($input)) {
+            $input = stream_get_meta_data($input)['uri'];
+        }
+
+        $mimeType = $this->getMimeType($input);
+
+        // Todo
+        return false;
+        // return $mimeType == 'image/webp';
+    }
+
+    public function isWebp($input)
+    {
+        if (!is_resource($input)) {
+            $input = stream_get_meta_data($input)['uri'];
+        }
+
+        $mimeType = $this->getMimeType($input);
+
+        return $mimeType == 'image/webp';
+    }
+
+    public function isSvg($input)
+    {
+        if (!is_resource($input)) {
+            $input = stream_get_meta_data($input)['uri'];
+        }
+
+        $mimeType = $this->getMimeType($input);
+
+        return $mimeType == 'image/svg+xml';
     }
 
     /**

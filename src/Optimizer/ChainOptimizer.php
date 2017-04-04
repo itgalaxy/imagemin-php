@@ -12,6 +12,14 @@ class ChainOptimizer implements OptimizerInterface
 
     public function optimize($input)
     {
+        if (!is_resource($input)) {
+            throw new \Exception('Expected a resource type');
+        }
+
+        if (count($this->optimizers) == 0) {
+            throw new \Exception('Chain optimizer should contain at least one optimizer');
+        }
+
         $result = $input;
 
         foreach ($this->optimizers as $optimizer) {

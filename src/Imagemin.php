@@ -5,20 +5,17 @@ use Itgalaxy\Imagemin\Filesystem\Filesystem;
 use Itgalaxy\Imagemin\Optimizer\NullOptimizer;
 use Itgalaxy\Imagemin\Optimizer\OptimizerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
+use Webmozart\Glob\Iterator\GlobIterator;
 
 class Imagemin
 {
-    // Todo fs private or protected
     private $fs = null;
 
     private $options = [];
 
-    public function __construct(array $options = [], LoggerInterface $logger = null)
+    public function __construct(array $options = [])
     {
         $this->fs = new Filesystem();
-        $this->logger = $logger ? $logger : new NullLogger();
 
         $optionsResolver = new OptionsResolver();
         $this->configureOptions($optionsResolver);
@@ -33,53 +30,50 @@ class Imagemin
         $resolver->setAllowedTypes('plugins', OptimizerInterface::class);
     }
 
-    // Todo need support glob as $input
-    public function process($input, $output = null, array $options = [])
+    public function process($input, $output = null)
     {
-        if (is_string($input)) {
-            $input = [$input];
-        }
-
-        if (count($options) > 0) {
-            $optionsResolver = new OptionsResolver();
-            $this->configureOptions($optionsResolver);
-            $options = $optionsResolver->resolve($options);
-        } else {
-            $options = $this->options;
+        if (!is_string($input)) {
+            throw new \Exception('Input should be string');
         }
 
         $result = [];
 
-        foreach($input as $filePath) {
-            $result[$filePath] = $this->handleFile($filePath, $output, $options);
+        $iterator = new GlobIterator($input);
+
+        foreach ($iterator as $path) {
+            // Todo check flags for all fopen
+            $input = @fopen($path, 'r');
+
+            if ($input === false) {
+                throw new \Exception('Failed to open stream' . $input);
+            }
+
+            $result[$path] = $this->handleFile($input, $output);
         }
 
         return $result;
     }
 
-    protected function handleFile($input, $output, $options)
+    public function processStream($input)
     {
-        $optimizer = $options['plugins'];
+        $output = $this->fs->getTempDir();
 
-        if (!$this->fs->exists($input)) {
-            throw new \Exception('File ' . $input . ' is not found');
-        }
+        return $this->handleFile($input, $output);
+    }
 
-        $srcStream = fopen($input, 'r');
+    protected function handleFile($input, $output)
+    {
+        $optimizer = $this->options['plugins'];
 
-        if ($srcStream === false) {
-           throw new \Exception('Failed to open stream' . $input);
-        }
+        $optimizedStream = $optimizer->optimize($input);
 
-        $optimizedStream = $optimizer->optimize($srcStream);
-
-        $srcSize = fstat($srcStream)['size'];
+        $srcSize = fstat($input)['size'];
         $optimizedSize = fstat($optimizedStream)['size'];
 
-        $stream = $optimizedSize > $srcSize ? $srcStream : $optimizedStream;
+        $stream = $optimizedSize > $srcSize ? $input : $optimizedStream;
 
-        // Todo remove min-
-        $dest = $output ? $output . '/min-' . basename($input) : null;
+        $uri = stream_get_meta_data($input)['uri'];
+        $dest = $output ? $output . '/' . basename($uri) : null;
 
         if (!isset($dest)) {
             return $stream;

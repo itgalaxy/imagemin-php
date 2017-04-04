@@ -1,6 +1,8 @@
 <?php
 namespace Itgalaxy\Imagemin\Bin;
 
+use Symfony\Component\Process\ExecutableFinder;
+
 abstract class AbstractBin
 {
     protected $name = null;
@@ -30,5 +32,16 @@ abstract class AbstractBin
     public function getBinPath()
     {
         return $this->getBinWrapper()->path();
+    }
+
+    // Todo add pre testing
+    // Todo add option
+    private function findExecutable($name)
+    {
+        $executableFinder = new ExecutableFinder();
+
+        return $this->option($name . '_bin', function () use ($name, $executableFinder) {
+            return $executableFinder->find($name, $name);
+        });
     }
 }
