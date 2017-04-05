@@ -22,7 +22,7 @@ class WebpOptimizerTest extends TestCase
         $this->assertTrue($optimizerStreamSize < $sourceStreamSize);
 
         $fs = new Filesystem();
-        $this->assertTrue($fs->isWebp($optimizedStream));
+        $this->assertTrue($fs->isWebP($optimizedStream));
 
         $fs->remove(stream_get_meta_data($optimizedStream)['uri']);
     }
@@ -53,7 +53,7 @@ class WebpOptimizerTest extends TestCase
         $this->assertTrue($optimizerStreamSize < $sourceStreamSize);
 
         $fs = new Filesystem();
-        $this->assertTrue($fs->isWebp($optimizedStream));
+        $this->assertTrue($fs->isWebP($optimizedStream));
 
         $fs->remove(stream_get_meta_data($optimizedStream)['uri']);
     }

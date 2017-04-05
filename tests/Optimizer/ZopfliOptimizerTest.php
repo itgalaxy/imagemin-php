@@ -21,7 +21,7 @@ class ZopfliOptimizerTest extends TestCase
         $this->assertTrue($optimizerStreamSize < $sourceStreamSize);
 
         $fs = new Filesystem();
-        $this->assertTrue($fs->isPng($optimizedStream));
+        $this->assertTrue($fs->isPNG($optimizedStream));
     }
 
     public function testSupportZopfliOptions()
@@ -44,7 +44,7 @@ class ZopfliOptimizerTest extends TestCase
         $this->assertTrue($optimizerStreamSize < $sourceStreamSize);
 
         $fs = new Filesystem();
-        $this->assertTrue($fs->isPng($optimizedStream));
+        $this->assertTrue($fs->isPNG($optimizedStream));
     }
 
     public function testThrowErrorWhenInputIsNotResource()

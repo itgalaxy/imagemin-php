@@ -18,6 +18,6 @@ class JpegoptimBin extends AbstractBin
             ->src($url . 'linux/jpegoptim', 'linux')
             ->src($url . 'win32/jpegoptim.exe', 'windows')
             ->dest($this->binDir . '/' . $this->name)
-            ->using(substr($platform, 0, 3) === 'win' ? 'jpegoptim.exe' : 'jpegoptim');
+            ->using(substr($platform, 0, 3) == 'win' ? 'jpegoptim.exe' : 'jpegoptim');
     }
 }

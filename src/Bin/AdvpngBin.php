@@ -18,6 +18,6 @@ class AdvpngBin extends AbstractBin
             ->src($url . 'linux/advpng', 'linux')
             ->src($url . 'win32/advpng.exe', 'windows')
             ->dest($this->binDir . '/' . $this->name)
-            ->using(substr($platform, 0, 3) === 'win' ? 'advpng.exe' : 'advpng');
+            ->using(substr($platform, 0, 3) == 'win' ? 'advpng.exe' : 'advpng');
     }
 }

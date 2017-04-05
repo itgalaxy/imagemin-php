@@ -29,77 +29,89 @@ class Filesystem extends \Symfony\Component\Filesystem\Filesystem
         return '/tmp/';
     }
 
-    private function getMimeTypeByFilePath($input)
+    private function getMimeType($originFile)
     {
-        if (!file_exists($input)) {
-            throw new \Exception('File ' . $input . ' is not found');
+        if (is_resource($originFile)) {
+            $originFile = stream_get_meta_data($originFile)['uri'];
         }
 
-        if (!is_readable($input)) {
-            throw new \Exception('File ' . $input . ' is not readable');
+        if (stream_is_local($originFile) && !@is_file($originFile)) {
+            throw new \Exception(sprintf('Failed to get mime type "%s" because file does not exist.', $originFile));
         }
 
-        if (filesize($input) === 0) {
-            throw new \Exception('Empty file ' . $input);
-        }
-
-        if (pathinfo($input, PATHINFO_EXTENSION) === 'svg') {
-            $isXml = simplexml_load_string(
-                file_get_contents($input),
-                'SimpleXmlElement',
-                LIBXML_NOERROR + LIBXML_ERR_FATAL + LIBXML_ERR_NONE
-            );
-
-            if (!$isXml) {
-                return false;
-            }
-
-            return 'image/svg+xml';
+        if (filesize($originFile) === 0) {
+            throw new \Exception(sprintf('Failed to get mime type "%s" because file is empty.', $originFile));
         }
 
         try {
             if (is_callable('exif_imagetype')) {
-                $mime = image_type_to_mime_type(exif_imagetype($input));
+                $mime = image_type_to_mime_type(exif_imagetype($originFile));
             } elseif (function_exists('getimagesize')) {
-                $imagesize = getimagesize($input);
-                $mime = isset($imagesize['mime']) ? $imagesize['mime'] : false;
+                $imagesize = getimagesize($originFile);
+                $mime = isset($imagesize['mime']) ? $imagesize['mime'] : null;
             } else {
-                $mime = false;
+                $mime = null;
             }
         } catch (\Exception $e) {
-            $mime = false;
+            $mime = null;
+        }
+
+        // Fix for php 5.6
+        if (!$mime || $mime === 'application/octet-stream') {
+            $contents = file_get_contents($originFile, false, null, 0, 65535);
+            $bytes = unpack("C*", $contents);
+
+            if ($bytes[9] == '87' && $bytes[10] == '69' && $bytes[11] == '66' && $bytes[12] == '80') {
+                return 'image/webp';
+            }
+
+            libxml_use_internal_errors(true);
+            $doc = simplexml_load_string($contents);
+
+            if ($doc) {
+                libxml_clear_errors();
+
+                return 'image/svg+xml';
+            }
         }
 
         return $mime;
     }
 
-    public function getMimeType($filename)
+    public function isJPG($originFile)
     {
-        return mime_content_type($filename);
+        return $this->getMimeType($originFile) == 'image/jpeg';
     }
 
-    public function isJpg($input)
+    public function isProgressiveJPG($originFile)
     {
-        if (!is_resource($input)) {
-            $input = stream_get_meta_data($input)['uri'];
-        }
-
-        $mimeType = $this->getMimeType($input);
-
-        return $mimeType == 'image/jpeg';
-    }
-
-    public function isJpgProgressive($input)
-    {
-        if (!$this->isJpg($input)) {
+        if (!$this->isJPG($originFile)) {
             return false;
         }
 
-        if (!is_resource($input)) {
-            $input = stream_get_meta_data($input)['uri'];
+        if (is_resource($originFile)) {
+            $originFile = stream_get_meta_data($originFile)['uri'];
         }
 
-        $contents = stream_get_contents($input, 65535);
+        if (stream_is_local($originFile) && !is_file($originFile)) {
+            throw new \Exception(sprintf('Failed to get mime type "%s" because file does not exist.', $originFile));
+        }
+
+        $stream = @fopen($originFile, 'r');
+
+        if ($stream === false) {
+            throw new IOException(
+                sprintf(
+                    'Failed to check "%s" is progressive jpg because source file could not be opened for reading.',
+                    $originFile
+                ),
+                0,
+                null,
+                $originFile
+            );
+        }
+
+        $contents = stream_get_contents($stream, 65535);
         $bytes = unpack("C*", $contents);
 
         $prevByte = null;
@@ -107,13 +119,13 @@ class Filesystem extends \Symfony\Component\Filesystem\Filesystem
         foreach ($bytes as $byte) {
             $byte = dechex($byte);
 
-            if ($prevByte !== 'ff') {
+            if ($prevByte != 'ff') {
                 $prevByte = $byte;
 
                 continue;
             }
 
-            if ($byte === 'c2') {
+            if ($byte == 'c2') {
                 return true;
             }
 
@@ -123,61 +135,29 @@ class Filesystem extends \Symfony\Component\Filesystem\Filesystem
         return false;
     }
 
-    public function isPng($input)
+    public function isPNG($originFile)
     {
-        if (!is_resource($input)) {
-            $input = stream_get_meta_data($input)['uri'];
-        }
-
-        $mimeType = $this->getMimeType($input);
-
-        return $mimeType == 'image/png';
+        return $this->getMimeType($originFile) == 'image/png';
     }
 
-    public function isGif($input)
+    public function isGIF($originFile)
     {
-        if (!is_resource($input)) {
-            $input = stream_get_meta_data($input)['uri'];
-        }
-
-        $mimeType = $this->getMimeType($input);
-
-        return $mimeType == 'image/gif';
+        return $this->getMimeType($originFile) == 'image/gif';
     }
 
-    public function isTif($input)
+    public function isTIF($originFile)
     {
-        if (!is_resource($input)) {
-            $input = stream_get_meta_data($input)['uri'];
-        }
-
-        $mimeType = $this->getMimeType($input);
-
-        // Todo
-        return false;
-        // return $mimeType == 'image/webp';
+        return $this->getMimeType($originFile) == 'image/tiff';
     }
 
-    public function isWebp($input)
+    public function isWebP($originFile)
     {
-        if (!is_resource($input)) {
-            $input = stream_get_meta_data($input)['uri'];
-        }
-
-        $mimeType = $this->getMimeType($input);
-
-        return $mimeType == 'image/webp';
+        return $this->getMimeType($originFile) == 'image/webp';
     }
 
-    public function isSvg($input)
+    public function isSVG($originFile)
     {
-        if (!is_resource($input)) {
-            $input = stream_get_meta_data($input)['uri'];
-        }
-
-        $mimeType = $this->getMimeType($input);
-
-        return $mimeType == 'image/svg+xml';
+        return $this->getMimeType($originFile) == 'image/svg+xml';
     }
 
     /**
@@ -200,7 +180,7 @@ class Filesystem extends \Symfony\Component\Filesystem\Filesystem
             // If tempnam failed or no scheme return the filename otherwise prepend the scheme
             if (false !== $tmpFile) {
                 if (null !== $scheme && 'gs' !== $scheme) {
-                    return $scheme.'://'.$tmpFile;
+                    return $scheme . '://' . $tmpFile;
                 }
 
                 return $tmpFile;
@@ -212,7 +192,7 @@ class Filesystem extends \Symfony\Component\Filesystem\Filesystem
         // Loop until we create a valid temp file or have reached 10 attempts
         for ($i = 0; $i < 10; ++$i) {
             // Create a unique filename
-            $tmpFile = $dir.'/'.$prefix.uniqid(mt_rand(), true);
+            $tmpFile = $dir . '/' . $prefix . uniqid(mt_rand(), true);
             // Use fopen instead of file_exists as some streams do not support stat
             // Use mode 'x+' to atomically check existence and create to avoid a TOCTOU vulnerability
             $handle = @fopen($tmpFile, 'x+');

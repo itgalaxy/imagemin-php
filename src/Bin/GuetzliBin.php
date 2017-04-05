@@ -18,7 +18,7 @@ class GuetzliBin extends AbstractBin
             ->src($url . 'linux/guetzli', 'linux')
             ->src($url . 'win/guetzli.exe', 'windows')
             ->dest($this->binDir . '/' . $this->name)
-            ->using(substr($platform, 0, 3) === 'win' ? 'guetzli.exe' : 'guetzli');
+            ->using(substr($platform, 0, 3) == 'win' ? 'guetzli.exe' : 'guetzli');
     }
 
     public function install($args = [])

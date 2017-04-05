@@ -80,10 +80,10 @@ class WebpOptimizer extends OptimizerAbstract implements OptimizerInterface
             throw new \Exception('Expected a resource type');
         }
 
-        if (!$this->fs->isPng($input)
-            && !$this->fs->isJpg($input)
-            && !$this->fs->isTif($input)
-            && !$this->fs->isWebp($input)
+        if (!$this->fs->isPNG($input)
+            && !$this->fs->isJPG($input)
+            && !$this->fs->isTIF($input)
+            && !$this->fs->isWebP($input)
         ) {
             return $input;
         }

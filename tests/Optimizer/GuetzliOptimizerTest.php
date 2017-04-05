@@ -22,7 +22,7 @@ class GuetzliOptimizerTest extends TestCase
         $this->assertTrue($optimizerStreamSize < $sourceStreamSize);
 
         $fs = new Filesystem();
-        $this->assertTrue($fs->isJpg($optimizedStream));
+        $this->assertTrue($fs->isJPG($optimizedStream));
 
         $fs->remove(stream_get_meta_data($optimizedStream)['uri']);
     }
@@ -42,7 +42,7 @@ class GuetzliOptimizerTest extends TestCase
         $this->assertTrue($optimizerStreamSize < $sourceStreamSize);
 
         $fs = new Filesystem();
-        $this->assertTrue($fs->isJpg($optimizedStream));
+        $this->assertTrue($fs->isJPG($optimizedStream));
 
         $fs->remove(stream_get_meta_data($optimizedStream)['uri']);
     }
@@ -63,7 +63,7 @@ class GuetzliOptimizerTest extends TestCase
         $this->assertTrue($optimizerStreamSize < $sourceStreamSize);
 
         $fs = new Filesystem();
-        $this->assertTrue($fs->isJpg($optimizedStream));
+        $this->assertTrue($fs->isJPG($optimizedStream));
 
         $fs->remove(stream_get_meta_data($optimizedStream)['uri']);
     }

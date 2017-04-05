@@ -18,7 +18,7 @@ class MozjpegBin extends AbstractBin
             ->src($url . 'linux/cjpeg', 'linux')
             ->src($url . 'win/cjpeg.exe', 'windows')
             ->dest($this->binDir . '/' . $this->name)
-            ->using(substr($platform, 0, 3) === 'win' ? 'cjpeg.exe' : 'cjpeg');
+            ->using(substr($platform, 0, 3) == 'win' ? 'cjpeg.exe' : 'cjpeg');
     }
 
     public function install($args = [])

@@ -57,7 +57,7 @@ class PngquantOptimizer extends OptimizerAbstract implements OptimizerInterface
             throw new \Exception('Expected a resource type');
         }
 
-        if (!$this->fs->isPng($input)) {
+        if (!$this->fs->isPNG($input)) {
             return $input;
         }
 

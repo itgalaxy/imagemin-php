@@ -22,8 +22,8 @@ class MozjpegOptimizerTest extends TestCase
         $this->assertTrue($optimizerStreamSize < $sourceStreamSize);
 
         $fs = new Filesystem();
-        $this->assertTrue($fs->isJpg($optimizedStream));
-        $this->assertTrue($fs->isJpgProgressive($optimizedStream));
+        $this->assertTrue($fs->isJPG($optimizedStream));
+        $this->assertTrue($fs->isProgressiveJPG($optimizedStream));
 
         $fs->remove(stream_get_meta_data($optimizedStream)['uri']);
     }
@@ -58,8 +58,8 @@ class MozjpegOptimizerTest extends TestCase
         $this->assertTrue($optimizerStreamSize < $sourceStreamSize);
 
         $fs = new Filesystem();
-        $this->assertTrue($fs->isJpg($optimizedStream));
-        $this->assertFalse($fs->isJpgProgressive($optimizedStream));
+        $this->assertTrue($fs->isJPG($optimizedStream));
+        $this->assertFalse($fs->isProgressiveJPG($optimizedStream));
 
         $fs->remove(stream_get_meta_data($optimizedStream)['uri']);
     }

@@ -42,7 +42,7 @@ class GifsicleOptimizer extends OptimizerAbstract implements OptimizerInterface
             throw new \Exception('Expected a resource type');
         }
 
-        if (!$this->fs->isGif($input)) {
+        if (!$this->fs->isGIF($input)) {
             return $input;
         }
 

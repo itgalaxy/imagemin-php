@@ -22,7 +22,7 @@ class GifsicleOptimizerTest extends TestCase
         $this->assertTrue($optimizerStreamSize < $sourceStreamSize);
 
         $fs = new Filesystem();
-        $this->assertTrue($fs->isGif($optimizedStream));
+        $this->assertTrue($fs->isGIF($optimizedStream));
 
         $fs->remove(stream_get_meta_data($optimizedStream)['uri']);
     }
@@ -45,7 +45,7 @@ class GifsicleOptimizerTest extends TestCase
         $this->assertTrue($optimizerStreamSize < $sourceStreamSize);
 
         $fs = new Filesystem();
-        $this->assertTrue($fs->isGif($optimizedStream));
+        $this->assertTrue($fs->isGIF($optimizedStream));
 
         $fs->remove(stream_get_meta_data($optimizedStream)['uri']);
     }

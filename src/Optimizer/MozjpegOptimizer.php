@@ -77,7 +77,7 @@ class MozjpegOptimizer extends OptimizerAbstract implements OptimizerInterface
             throw new \Exception('Expected a resource type');
         }
 
-        if (!$this->fs->isJpg($input)) {
+        if (!$this->fs->isJPG($input)) {
             return $input;
         }
 

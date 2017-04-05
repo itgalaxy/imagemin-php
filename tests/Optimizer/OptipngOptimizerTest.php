@@ -22,7 +22,7 @@ class OptipngOptimizerTest extends TestCase
         $this->assertTrue($optimizerStreamSize < $sourceStreamSize);
 
         $fs = new Filesystem();
-        $this->assertTrue($fs->isPng($optimizedStream));
+        $this->assertTrue($fs->isPNG($optimizedStream));
 
         $fs->remove(stream_get_meta_data($optimizedStream)['uri']);
     }
@@ -46,7 +46,7 @@ class OptipngOptimizerTest extends TestCase
         $this->assertTrue($optimizerStreamSize < $sourceStreamSize);
 
         $fs = new Filesystem();
-        $this->assertTrue($fs->isPng($optimizedStream));
+        $this->assertTrue($fs->isPNG($optimizedStream));
 
         $fs->remove(stream_get_meta_data($optimizedStream)['uri']);
     }

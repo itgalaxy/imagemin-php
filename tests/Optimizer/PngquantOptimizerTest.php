@@ -21,7 +21,7 @@ class PngquantOptimizerTest extends TestCase
         $this->assertTrue($optimizerStreamSize < $sourceStreamSize);
 
         $fs = new Filesystem();
-        $this->assertTrue($fs->isPng($optimizedStream));
+        $this->assertTrue($fs->isPNG($optimizedStream));
     }
 
     public function testSupportOptipngOptions()
@@ -44,7 +44,7 @@ class PngquantOptimizerTest extends TestCase
         $this->assertTrue($optimizerStreamSize < $sourceStreamSize);
 
         $fs = new Filesystem();
-        $this->assertTrue($fs->isPng($optimizedStream));
+        $this->assertTrue($fs->isPNG($optimizedStream));
     }
 
     public function testSupportOptipngOptionsFloydBool()
@@ -67,7 +67,7 @@ class PngquantOptimizerTest extends TestCase
         $this->assertTrue($optimizerStreamSize < $sourceStreamSize);
 
         $fs = new Filesystem();
-        $this->assertTrue($fs->isPng($optimizedStream));
+        $this->assertTrue($fs->isPNG($optimizedStream));
     }
 
     public function testThrowErrorWhenInputIsNotResource()
