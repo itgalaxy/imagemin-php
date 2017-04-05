@@ -14,7 +14,7 @@ class JpegRecompressBin extends AbstractBin
         $binWrapper = new BinWrapper();
 
         return $binWrapper
-            ->src($url . 'osx/jpeg-recompress', 'darwin')
+            ->src($url . 'macos/jpeg-recompress', 'darwin')
             ->src($url . 'linux/jpeg-recompress', 'linux')
             ->src($url . 'win/jpeg-recompress.exe', 'windows')
             ->dest($this->binDir . '/' . $this->name)

@@ -14,7 +14,7 @@ class CwebpBin extends AbstractBin
         $binWrapper = new BinWrapper();
 
         return $binWrapper
-            ->src($url . 'osx/cwebp', 'darwin')
+            ->src($url . 'macos/cwebp', 'darwin')
             ->src($url . 'linux/x86/cwebp', 'linux', 'x86')
             ->src($url . 'linux/x64/cwebp', 'linux', 'x64')
             ->src($url . 'win/x86/cwebp.exe', 'windows', 'x86')

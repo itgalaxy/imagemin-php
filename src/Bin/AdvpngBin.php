@@ -14,7 +14,7 @@ class AdvpngBin extends AbstractBin
         $binWrapper = new BinWrapper();
 
         return $binWrapper
-            ->src($url . 'osx/advpng', 'darwin')
+            ->src($url . 'macos/advpng', 'darwin')
             ->src($url . 'linux/advpng', 'linux')
             ->src($url . 'win32/advpng.exe', 'windows')
             ->dest($this->binDir . '/' . $this->name)

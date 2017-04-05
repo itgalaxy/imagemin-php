@@ -14,7 +14,7 @@ class ZopflipngBin extends AbstractBin
         $binWrapper = new BinWrapper();
 
         return $binWrapper
-            ->src($url . 'osx/zopflipng', 'darwin')
+            ->src($url . 'macos/zopflipng', 'darwin')
             ->src($url . 'linux/zopflipng', 'linux')
             ->src($url . 'win32/zopflipng.exe', 'windows')
             ->dest($this->binDir . '/' . $this->name)

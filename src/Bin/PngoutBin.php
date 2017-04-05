@@ -14,7 +14,7 @@ class PngoutBin extends AbstractBin
         $binWrapper = new BinWrapper();
 
         return $binWrapper
-            ->src($url . 'osx/pngout', 'darwin')
+            ->src($url . 'macos/pngout', 'darwin')
             ->src($url . 'linux/x86/pngout', 'linux', 'x86')
             ->src($url . 'linux/x64/pngout', 'linux', 'x64')
             ->src($url . 'freebsd/x86/pngout', 'freebsd', 'x86')

@@ -14,7 +14,7 @@ class OptipngBin extends AbstractBin
         $binWrapper = new BinWrapper();
 
         return $binWrapper
-            ->src($url . 'osx/optipng', 'darwin')
+            ->src($url . 'macos/optipng', 'darwin')
             ->src($url . 'linux/x86/optipng', 'linux', 'x86')
             ->src($url . 'linux/x64/optipng', 'linux', 'x64')
             ->src($url . 'freebsd/x86/optipng', 'freebsd', 'x86')
