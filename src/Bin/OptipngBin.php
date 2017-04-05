@@ -5,7 +5,7 @@ use Itgalaxy\BinWrapper\BinWrapper;
 
 class OptipngBin extends AbstractBin
 {
-    protected $url = 'https://raw.githubusercontent.com/imagemin/optipng-bin/v3.1.2/vendor/';
+    protected $url = 'https://raw.github.com/itgalaxy/imagemin-php/master/bin/optipng/';
 
     protected function getBinWrapper()
     {

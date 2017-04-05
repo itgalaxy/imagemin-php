@@ -5,7 +5,7 @@ use Itgalaxy\BinWrapper\BinWrapper;
 
 class PngquantBin extends AbstractBin
 {
-    protected $url = 'https://raw.github.com/imagemin/pngquant-bin/v3.1.1/vendor/';
+    protected $url = 'https://raw.github.com/itgalaxy/imagemin-php/master/bin/pngquant/';
 
     protected function getBinWrapper()
     {

@@ -5,7 +5,7 @@ use Itgalaxy\BinWrapper\BinWrapper;
 
 class PngoutBin extends AbstractBin
 {
-    protected $url = 'https://raw.github.com/imagemin/pngout-bin/v3.0.0/vendor/';
+    protected $url = 'https://raw.github.com/itgalaxy/imagemin-php/master/bin/pngout/';
 
     protected function getBinWrapper()
     {

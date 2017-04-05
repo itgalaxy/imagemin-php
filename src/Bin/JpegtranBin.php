@@ -5,7 +5,7 @@ use Itgalaxy\BinWrapper\BinWrapper;
 
 class JpegtranBin extends AbstractBin
 {
-    protected $url = 'https://raw.githubusercontent.com/imagemin/jpegtran-bin/v3.2.0/vendor/';
+    protected $url = 'https://raw.github.com/itgalaxy/imagemin-php/master/bin/jpegtran/';
 
     protected function getBinWrapper()
     {

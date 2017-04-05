@@ -5,7 +5,7 @@ use Itgalaxy\BinWrapper\BinWrapper;
 
 class JpegoptimBin extends AbstractBin
 {
-    protected $url = 'https://raw.githubusercontent.com/imagemin/jpegoptim-bin/v3.0.0/vendor/';
+    protected $url = 'https://raw.github.com/itgalaxy/imagemin-php/master/bin/jpegoptim/';
 
     protected function getBinWrapper()
     {

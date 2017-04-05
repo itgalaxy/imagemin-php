@@ -5,7 +5,7 @@ use Itgalaxy\BinWrapper\BinWrapper;
 
 class MozjpegBin extends AbstractBin
 {
-    protected $url = 'https://raw.githubusercontent.com/imagemin/mozjpeg-bin/v4.1.2/vendor/';
+    protected $url = 'https://raw.github.com/itgalaxy/imagemin-php/master/bin/mozjpeg/';
 
     protected function getBinWrapper()
     {

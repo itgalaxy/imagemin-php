@@ -5,7 +5,7 @@ use Itgalaxy\BinWrapper\BinWrapper;
 
 class ZopflipngBin extends AbstractBin
 {
-    protected $url = 'https://raw.github.com/imagemin/zopflipng-bin/v4.0.0/vendor/';
+    protected $url = 'https://raw.github.com/itgalaxy/imagemin-php/master/bin/zopflipng/';
 
     protected function getBinWrapper()
     {

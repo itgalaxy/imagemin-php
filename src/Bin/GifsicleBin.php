@@ -5,7 +5,7 @@ use Itgalaxy\BinWrapper\BinWrapper;
 
 class GifsicleBin extends AbstractBin
 {
-    protected $url = 'https://raw.githubusercontent.com/imagemin/gifsicle-bin/v3.0.4/vendor/';
+    protected $url = 'https://raw.github.com/itgalaxy/imagemin-php/master/bin/gifsicle/';
 
     protected function getBinWrapper()
     {

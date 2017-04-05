@@ -5,7 +5,7 @@ use Itgalaxy\BinWrapper\BinWrapper;
 
 class JpegRecompressBin extends AbstractBin
 {
-    protected $url = 'https://raw.github.com/imagemin/jpeg-recompress-bin/v3.0.1/vendor/';
+    protected $url = 'https://raw.github.com/itgalaxy/imagemin-php/master/bin/jpeg-recompress/';
 
     protected function getBinWrapper()
     {

@@ -5,7 +5,7 @@ use Itgalaxy\BinWrapper\BinWrapper;
 
 class CwebpBin extends AbstractBin
 {
-    protected $url = 'https://raw.githubusercontent.com/imagemin/cwebp-bin/v3.2.0/vendor/';
+    protected $url = 'https://raw.github.com/itgalaxy/imagemin-php/master/bin/cwebp/';
 
     protected function getBinWrapper()
     {

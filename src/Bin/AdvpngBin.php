@@ -5,7 +5,8 @@ use Itgalaxy\BinWrapper\BinWrapper;
 
 class AdvpngBin extends AbstractBin
 {
-    protected $url = 'https://raw.github.com/imagemin/advpng-bin/v3.0.0/vendor/';
+    // Todo change master on version after first initial
+    protected $url = 'https://raw.github.com/itgalaxy/imagemin-php/master/bin/advpng/';
 
     protected function getBinWrapper()
     {

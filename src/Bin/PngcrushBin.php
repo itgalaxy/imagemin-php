@@ -6,7 +6,7 @@ use Itgalaxy\BinWrapper\BinWrapper;
 class PngcrushBin extends AbstractBin
 {
     // Todo bug with 404
-    protected $url = 'https://raw.githubusercontent.com/imagemin/pngcrush-bin/v3.1.0/vendor/';
+    protected $url = 'https://raw.github.com/itgalaxy/imagemin-php/master/bin/pngcrush/';
 
     protected function getBinWrapper()
     {

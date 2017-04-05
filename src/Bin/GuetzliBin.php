@@ -5,7 +5,7 @@ use Itgalaxy\BinWrapper\BinWrapper;
 
 class GuetzliBin extends AbstractBin
 {
-    protected $url = 'https://raw.githubusercontent.com/imagemin/guetzli-bin/v0.1.0/vendor/';
+    protected $url = 'https://raw.github.com/itgalaxy/imagemin-php/master/bin/guetzli/';
 
     protected function getBinWrapper()
     {
