@@ -13,51 +13,51 @@ matrix:
           php: 5.6
           env: DEPENDENCIES=lowest
 
-#        - os: linux
-#          php: 5.6
-#          env: DEPENDENCIES=highest
-#
-#        - os: linux
-#          php: 7.0
-#          env: DEPENDENCIES=lowest
-#
-#        - os: linux
-#          php: 7.0
-#          env: DEPENDENCIES=highest
-#
-#        - os: linux
-#          php: 7.1
-#          env: DEPENDENCIES=lowest
-#
-#        - os: linux
-#          php: 7.1
-#          env: DEPENDENCIES=highest WITH_COVERAGE=true
-#
-#        - os: linux
-#          php: hhvm
-#          env: DEPENDENCIES=highest
-#
-#        - os: linux
-#          php: nightly
-#          env: DEPENDENCIES=highest
-#
+        - os: linux
+          php: 5.6
+          env: DEPENDENCIES=highest
+
+        - os: linux
+          php: 7.0
+          env: DEPENDENCIES=lowest
+
+        - os: linux
+          php: 7.0
+          env: DEPENDENCIES=highest
+
+        - os: linux
+          php: 7.1
+          env: DEPENDENCIES=lowest
+
+        - os: linux
+          php: 7.1
+          env: DEPENDENCIES=highest WITH_COVERAGE=true
+
+        - os: linux
+          php: hhvm
+          env: DEPENDENCIES=highest
+
+        - os: linux
+          php: nightly
+          env: DEPENDENCIES=highest
+
         - os: osx
           osx_image: xcode8.3
           language: generic
           env: _OSX=10.12 _PHP=php56 DEPENDENCIES=highest
-#
-#        - os: osx
-#          osx_image: xcode8.3
-#          language: generic
-#          env: _OSX=10.12 _PHP=php70 DEPENDENCIES=highest
-#
-#        - os: osx
-#          osx_image: xcode8.3
-#          language: generic
-#          env: _OSX=10.12 _PHP=php71 DEPENDENCIES=highest
-#
-#    allow_failures:
-#        - php: nightly
+
+        - os: osx
+          osx_image: xcode8.3
+          language: generic
+          env: _OSX=10.12 _PHP=php70 DEPENDENCIES=highest
+
+        - os: osx
+          osx_image: xcode8.3
+          language: generic
+          env: _OSX=10.12 _PHP=php71 DEPENDENCIES=highest
+
+    allow_failures:
+        - php: nightly
 
 before_install:
     - if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then /usr/bin/env bash bin/prepare_osx_env.sh ; fi
