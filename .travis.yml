@@ -41,10 +41,10 @@ matrix:
 #          php: nightly
 #          env: DEPENDENCIES=highest
 #
-#        - os: osx
-#          osx_image: xcode8.3
-#          language: generic
-#          env: _OSX=10.12 _PHP=php56 DEPENDENCIES=highest
+        - os: osx
+          osx_image: xcode8.3
+          language: generic
+          env: _OSX=10.12 _PHP=php56 DEPENDENCIES=highest
 #
 #        - os: osx
 #          osx_image: xcode8.3
