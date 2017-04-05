@@ -25,6 +25,7 @@ Coming soon...
 
 -   Support logger.
 -   Support input as array of glob strings.
+-   Support svgo.
 
 ## Related
 
